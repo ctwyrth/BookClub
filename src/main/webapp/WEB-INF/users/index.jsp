@@ -21,8 +21,8 @@
 <body>
 	<div class="container-fluid">
 		<div class="container mx-auto mt-4">
-			<h1 class="display-3" style="color: blueviolet;">Book Club!</h1>
-			<p>A place for friends to share thoughts on books.</p>
+			<h1 class="display-3" style="color: blueviolet;">Book Broker!</h1>
+			<p>A place for friends to share thoughts on... and borrow... books.</p>
 			<div class="row mt-3">
 				<div class="col-5 ms-auto me-2">
 					<h4>Register:</h4>

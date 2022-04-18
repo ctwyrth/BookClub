@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+//import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -49,6 +50,9 @@ public class User {
     
     @OneToMany(mappedBy="user", fetch = FetchType.LAZY)
     private List<Book> books;
+    
+    @OneToMany(mappedBy="user", fetch = FetchType.LAZY)
+    private List<Book> borrowed;
 
     @Column(updatable=false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
@@ -119,5 +123,19 @@ public class User {
     public void setUpdatedAt(Date updatedAt) {
     	this.updatedAt = updatedAt;
     }
+
+	public List<Book> getBooks() {
+		return books;
+	}
+	public void setBooks(List<Book> books) {
+		this.books = books;
+	}
+
+	public List<Book> getBorrowed() {
+		return borrowed;
+	}
+	public void setBorrowed(List<Book> borrowed) {
+		this.borrowed = borrowed;
+	}
 
 }

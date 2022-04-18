@@ -23,8 +23,8 @@
 		<div class="container mx-auto mt-4">
 			<header class="row justify-content-between align-items-center">
 				<div class="col-5 text-start">
-					<h1 class="display-5">Welcome, ${user.name}</h1>
-					<p>Books from everyone's shelves.</p>
+					<h4>Hello, ${user.name}. Welcome to...</h4>
+					<h1 class="display-4">The Book Broker!</h1>
 				</div>
 				<div class="col-5 text-end">
 					<a href="/logout" class="nav-link">Logout</a>
@@ -32,23 +32,72 @@
 				</div>
 			</header>
 			<main class="row mx-auto mt-3" style="width: 85%;">
-				<table class="table table-striped table-bordered">
+				<table class="table table-striped table-bordered caption-top">
+					<caption>Books Available to Borrow:</caption>
 					<thead class="table-info">
 						<tr>
 							<th>ID</th>
 							<th>Title</th>
 							<th>Author</th>
-							<th>Posted By</th>
+							<th>Owner</th>
+							<th>Actions</th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="book" items="${books}">
-							<tr class="align-middle">
-								<td><c:out value="${book.id}" /></td>
-								<td><a href="/books/${book.id}" class="nav-link"><c:out value="${book.title}" /></a></td>
-								<td><c:out value="${book.author}" /></td>
-								<td><c:out value="${book.user.getName()}" /></td>
-							</tr>
+							<c:if test="${book.borrower == null}">
+								<tr class="align-middle">
+									<td><c:out value="${book.id}" /></td>
+									<td><a href="/books/${book.id}" class="nav-link"><c:out value="${book.title}" /></a></td>
+									<td><c:out value="${book.author}" /></td>
+									<td><c:out value="${book.user.getName()}" /></td>
+									<td>
+										<c:if test="${book.user == user}"><a href="/books/${book.id}/edit" class="btn btn-sm btn-primary">Edit</a></c:if>
+										<c:if test="${book.user == user}">
+											<form:form action="/books/${book.id}/delete" method="POST" style="display: inline-block;">
+	    											<input type="hidden" name="_method" value="DELETE">
+	    											<input type="submit" value="Delete" class="btn btn-sm btn-danger ms-2">
+											</form:form>
+										</c:if>
+										<c:if test="${book.user != user}">
+											<form:form action="/borrow/${book.id}" method="POST" style="display: inline-block;">
+	    											<input type="hidden" name="_method" value="PUT">
+	    											<input type="submit" value="Borrow" class="btn btn-sm btn-light">
+											</form:form>
+										</c:if>
+									</td>
+								</tr>
+							</c:if>
+						</c:forEach>
+					</tbody>
+				</table>
+				<table class="table table-striped table-bordered caption-top mt-3">
+					<caption>Books I'm Borrowing:</caption>
+					<thead class="table-warning">
+						<tr>
+							<th>ID</th>
+							<th>Title</th>
+							<th>Author</th>
+							<th>Owner</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach var="book" items="${books}">
+							<c:if test="${book.borrower == user}">
+								<tr class="align-middle">
+									<td><c:out value="${book.id}" /></td>
+									<td><a href="/books/${book.id}" class="nav-link"><c:out value="${book.title}" /></a></td>
+									<td><c:out value="${book.author}" /></td>
+									<td><c:out value="${book.user.getName()}" /></td>
+									<td>
+										<form:form action="/return/${book.id}" method="POST" style="display: inline-block;">
+    											<input type="hidden" name="_method" value="PUT">
+    											<input type="submit" value="Return" class="btn btn-sm btn-secondary">
+										</form:form>
+									</td>
+								</tr>
+							</c:if>
 						</c:forEach>
 					</tbody>
 				</table>

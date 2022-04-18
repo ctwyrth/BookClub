@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+//import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -41,8 +42,12 @@ public class Book {
     private String thoughts;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "borrower_id")
+    private User borrower;
 
     @Column(updatable=false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
@@ -113,5 +118,12 @@ public class Book {
     public void setUpdatedAt(Date updatedAt) {
     	this.updatedAt = updatedAt;
     }
+
+	public User getBorrower() {
+		return borrower;
+	}
+	public void setBorrower(User borrower) {
+		this.borrower = borrower;
+	}
 
 }
